@@ -26,6 +26,7 @@ func (self *FilmHttpClient) GetPlayer(playName, vid string) (*FilmPlayer, error)
 		logrus.Errorf("get host type error: %v", err)
 		return nil, err
 	}
+	logrus.Debugf("get host type: %v", p)
 	fp := &FilmPlayer{Status: 1, PlayName: playName}
 	switch p.Host {
 	case "myunbo.duapp.com":
@@ -34,6 +35,7 @@ func (self *FilmHttpClient) GetPlayer(playName, vid string) (*FilmPlayer, error)
 		fp.PlayName = playName
 		fp.PlayerUrl = p.Path
 	}
+	logrus.Debugf("get film player: %v", fp)
 	
 	return fp, err
 }
