@@ -2,11 +2,17 @@ package controller
 
 import (
 	"net/http"
+	"time"
 	
 	"github.com/Sirupsen/logrus"
 )
 
 func (self *Logic) GetFilmPlayer(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	defer func() {
+		logrus.Debugf("[film] http: request url[%s] use_time[%v]", r.URL.String(), time.Now().Sub(start))
+	}()
+	
 	r.ParseForm()
 	
 	if len(r.Form["playname"]) == 0 || len(r.Form["vid"]) == 0 {
