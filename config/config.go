@@ -13,6 +13,7 @@ type Config struct {
 	Path    string
 	Host    string
 	Version string
+	FilmPlayerExpired int
 }
 
 func NewConfig() *Config {

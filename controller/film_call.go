@@ -8,10 +8,17 @@ import (
 )
 
 func (self *Logic) GetFilmPlayer(w http.ResponseWriter, r *http.Request) {
+	urlKey := r.URL.String()
 	start := time.Now()
 	defer func() {
-		logrus.Debugf("[film] http: request url[%s] use_time[%v]", r.URL.String(), time.Now().Sub(start))
+		logrus.Debugf("[film] http: request url[%s] use_time[%v]", urlKey, time.Now().Sub(start))
 	}()
+	
+	result := self.GetPlayerCache(urlKey)
+	if result != nil {
+		WriteBytes(w, http.StatusOK, result)
+		return
+	}
 	
 	r.ParseForm()
 	
@@ -25,6 +32,19 @@ func (self *Logic) GetFilmPlayer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logrus.Errorf("get film player error: %v", err)
 	}
+	
+	self.Lock()
+	fv, ok := self.playerMap[urlKey]
+	if ok {
+		fv.UpdateTime = time.Now().Unix()
+		fv.Player = fp
+	} else {
+		self.playerMap[urlKey] = &FilmPlayerInfo{
+			Player: fp,
+			UpdateTime: time.Now().Unix(),
+		}
+	}
+	self.Unlock()
 	
 	WriteJSON(w, http.StatusOK, fp)
 }
