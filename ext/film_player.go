@@ -12,7 +12,7 @@ func (self *FilmHttpClient) GetPlayerMyunbo(p *FilmHostType, fp *FilmPlayer) err
 		return err
 	}
 	httpReq.Header.Add("User-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B176 MicroMessenger/4.3.2")
-	httpReq.Header.Add("Referer", "https://myunbo.duapp.com/player.php?vid=869104~3f4934cc.acku")
+	httpReq.Header.Add("Referer", "https://myunbo.duapp.com/player.php?vid=CODUzODAxMg==~8c2ad552.acku")
 	
 	rsp, err := self.client.Do(httpReq)
 	defer func() {
